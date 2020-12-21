@@ -23,21 +23,32 @@ const id = generateUniqueId({
 
 app.get("/api/notes", function (req, res) {
   //use fs module to read the file
-  const readNotes = fs.readFileSync("db/db.json", { encoding: "utf8" });
+  const readNotes = JSON.parse(
+    fs.readFileSync("db/db.json", { encoding: "utf8" })
+  );
   console.log(readNotes);
+
   //THEN parse the file contents with JSON.parse() to get the real data
   //send the parased data back to the client with res.json()
+  res.json(readNotes);
   //time stamp as a unique id
 });
 
 app.post("/api/notes", function (req, res) {
   // Access the POSTed data in req.body
   //use the fs module to read the file
+  const readNotes = JSON.parse(
+    fs.readFileSync("db/db.json", { encoding: "utf8" })
+  );
   //THEN parse the file contents with JSON.parse() to get the real data
   //Push the req.body to the array list.
+
   //Json.stringify() the array list back into a json string
   //THEN save the contents back to the db.json file with the fs module
 });
+
+//New Note Array
+let savedNotes = [];
 
 app.delete("/api/notes/:id", function (req, res) {
   // access the id from req.params.id

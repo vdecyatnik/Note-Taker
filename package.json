@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "generate-unique-id": "^2.0.1",
+    "nanoid": "^3.1.20",
     "nodemon": "^2.0.6"
   },
   "repository": {

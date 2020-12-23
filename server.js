@@ -3,10 +3,10 @@ var express = require("express");
 //to read the data base
 const path = require("path");
 const fs = require("fs");
+
 const app = express();
 
-// generate a unique id package
-const generateUniqueId = require("generate-unique-id");
+const { nanoid } = require("nanoid");
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,19 +16,15 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const id = generateUniqueId({
-  length: 3,
-  useLetters: false,
-});
-
 app.get("/api/notes", function (req, res) {
   //use fs module to read the file
   const readNotes = JSON.parse(
     fs.readFileSync("db/db.json", { encoding: "utf8" })
   );
-  console.log(readNotes);
+  // console.log(readNotes);
 
   //THEN parse the file contents with JSON.parse() to get the real data
+
   //send the parased data back to the client with res.json()
   res.json(readNotes);
   //time stamp as a unique id
@@ -37,30 +33,46 @@ app.get("/api/notes", function (req, res) {
 app.post("/api/notes", function (req, res) {
   // Access the POSTed data in req.body
   //use the fs module to read the file
+  console.log("req.body", req.body);
+  //THEN parse the file contents with JSON.parse() to get the real data
   const readNotes = JSON.parse(
     fs.readFileSync("db/db.json", { encoding: "utf8" })
   );
-  //THEN parse the file contents with JSON.parse() to get the real data
+  var newNote = {
+    title: req.body.title,
+    text: req.body.text,
+    id: nanoid(),
+  };
+  // console.log(newNote);
   //Push the req.body to the array list.
+  readNotes.push(newNote);
 
   //Json.stringify() the array list back into a json string
+  // let json = JSON.stringify(readNotes);
+  //console.log(json);
   //THEN save the contents back to the db.json file with the fs module
+  fs.writeFileSync("db/db.json", JSON.stringify(readNotes));
+  res.json(newNote);
 });
-
-//New Note Array
-let savedNotes = [];
 
 app.delete("/api/notes/:id", function (req, res) {
   // access the id from req.params.id
   //use the fs module to read the file
+  const readNotes = JSON.parse(
+    fs.readFileSync("db/db.json", { encoding: "utf8" })
+  );
+
+  const updatedArray = readNotes.filter((item) => item.id !== req.params.id);
   //THEN parse the file contents with JSON.parse() to get the real data
-  //Option A
+  fs.writeFileSync("db/db.json", JSON.stringify(updatedArray));
+
   //Find the matching index using findIndex();
   //Remove the target element using .splice();
   //Option B
   //User the Array.filter() method to filter out the matching element
-  //myArray = myArray.filter({id})=> element.id!==req.params.id);
+
   //Return any type of success message.
+  res.json({ status: "success" });
 });
 app.get("/notes", function (req, res) {
   //return the contents of the notes.html

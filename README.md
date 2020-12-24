@@ -43,3 +43,11 @@
   ![homepage](homepage.png)
   ![savednote](savednote.png)
   ![notecontents](notecontents.png)
+
+  # Links
+
+  Github Repository 
+
+  [Link to Github Repository](https://github.com/vdecyatnik/Note-Taker)
+
+  [Link to Deployed App on Heroku](https://secret-escarpment-48794.herokuapp.com/)

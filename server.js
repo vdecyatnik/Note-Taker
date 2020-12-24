@@ -1,11 +1,11 @@
 var express = require("express");
-// requre the fs file module to import it.
-//to read the data base
+
 const path = require("path");
+//require file system to read/create files
 const fs = require("fs");
 
 const app = express();
-
+// id
 const { nanoid } = require("nanoid");
 
 const PORT = process.env.PORT || 3000;
@@ -21,14 +21,9 @@ app.get("/api/notes", function (req, res) {
   const readNotes = JSON.parse(
     fs.readFileSync("db/db.json", { encoding: "utf8" })
   );
-  // console.log(readNotes);
-
-  //THEN parse the file contents with JSON.parse() to get the real data
-
-  //send the parased data back to the client with res.json()
+  //send the parsed data back to the client with res.json()
   res.json(readNotes);
-  //time stamp as a unique id
-});
+  
 
 app.post("/api/notes", function (req, res) {
   // Access the POSTed data in req.body
@@ -43,13 +38,11 @@ app.post("/api/notes", function (req, res) {
     text: req.body.text,
     id: nanoid(),
   };
-  // console.log(newNote);
+  
   //Push the req.body to the array list.
   readNotes.push(newNote);
 
   //Json.stringify() the array list back into a json string
-  // let json = JSON.stringify(readNotes);
-  //console.log(json);
   //THEN save the contents back to the db.json file with the fs module
   fs.writeFileSync("db/db.json", JSON.stringify(readNotes));
   res.json(newNote);
@@ -66,12 +59,7 @@ app.delete("/api/notes/:id", function (req, res) {
   //THEN parse the file contents with JSON.parse() to get the real data
   fs.writeFileSync("db/db.json", JSON.stringify(updatedArray));
 
-  //Find the matching index using findIndex();
-  //Remove the target element using .splice();
-  //Option B
-  //User the Array.filter() method to filter out the matching element
 
-  //Return any type of success message.
   res.json({ status: "success" });
 });
 app.get("/notes", function (req, res) {

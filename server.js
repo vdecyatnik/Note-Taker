@@ -26,10 +26,9 @@ app.get("/api/notes", function (req, res) {
   
 
 app.post("/api/notes", function (req, res) {
-  // Access the POSTed data in req.body
-  //use the fs module to read the file
+  
   console.log("req.body", req.body);
-  //THEN parse the file contents with JSON.parse() to get the real data
+  
   const readNotes = JSON.parse(
     fs.readFileSync("db/db.json", { encoding: "utf8" })
   );
